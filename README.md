@@ -2,6 +2,16 @@
 
 This project is developed to enable nature, urban, and monument protectors to make annotations on digital maps to report environmental issues and promote conservation efforts. Users can mark areas that need protection, report them to the relevant authorities, or try to find solutions themselves.
 
+### What can be used to mark?
+
+- Marking of Plant and Animal Population
+- Marking of historical and archaeological remains
+- Marking of disaster and environmental problems that threaten the settlements
+- Marking of waste load causing environmental pollution
+- Marking of areas to be protected
+- Marking of Problems with City Planning
+- Marking of problems related to the practices of local governments
+
 ### Features
 The project includes the following mapping and annotation features:
 
@@ -16,7 +26,7 @@ The project includes the following mapping and annotation features:
 
 ### Export and Import
 - **Export as GeoJSON:** Export all your annotations and shapes as a GeoJSON file.
-- **Import GeoJSON:** Import a previously exported GeoJSON file to visualize the annotations again on the map.
+- **Import GeoJSON:** Import a previously exported GeoJSON file to visualize the annotations again on the map. Drag and leave are supported.
 
 ### Usage
 
@@ -25,9 +35,10 @@ The project includes the following mapping and annotation features:
 **2. Location Tracking:** Click the GPS icon to track your current location on the map. Continuous tracking of your location will be enabled.
 
 **3. Annotations:**
+
 - **Add Label:** By clicking the Text icon, a textbox is created at the clicked point on the map. To remove it, clear its content and press Enter or OK.
 - **Polyline:** Connect multiple points to draw a polyline.
-Polygon, Rectangle, Circle: Select the relevant tool and draw the desired area.
+- **Polygon, Rectangle, Circle:** Select the relevant tool and draw the desired area.
 - **Marker and CircleMarker:** These tools allow you to mark specific points on the map.
 
 **4. Export and Import Data:**

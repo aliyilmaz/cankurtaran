@@ -1,6 +1,16 @@
 ## Cankurtaran (Doğa ve Çevre Koruma Harita Projesi)
 Bu proje, doğa, şehir ve anıt koruyucularının dijital haritalar üzerinde işaretlemeler yapmasını sağlayarak çevre koruma ve sorunların raporlanması amacıyla geliştirilmiştir. Kullanıcılar, harita üzerinde çeşitli şekillerde işaretlemeler yaparak korunması gereken yerleri işaretleyebilir, ilgili kurumlara iletebilir veya çözüm üretmeye çalışabilir.
 
+### Neleri İşaretlemede kullanılabilir ?
+
+- Bitki ve Hayvan popülasyonunun işaretlenmesi
+- Tarihi ve Arkeolojik kalıntıların işaretlenmesi
+- Yerleşim yerlerini tehdit eden afet ve çevre sorunlarının işaretlenmesi
+- Çevre kirliliğine neden olan atık yükünün işaretlenmesi
+- Korunması gereken alanların işaretlenmesi
+- Şehir planlamayla ilgili sorunların işaretlenmesi
+- Yerel yönetimlerin uygulamalarıyla ilgili sorunların işaretlenmesi
+
 ### Özellikler
 Proje aşağıdaki harita ve işaretleme özelliklerine sahiptir:
 
@@ -16,7 +26,7 @@ Proje aşağıdaki harita ve işaretleme özelliklerine sahiptir:
 ### İndir ve Yükle
 - **GeoJSON olarak İndirme:** Yaptığınız tüm işaretlemeleri ve şekilleri GeoJSON formatında dışa aktarabilirsiniz.
 
-- **GeoJSON'u Yükleme:** Önceden dışa aktarılan GeoJSON dosyasını içeri aktararak harita üzerinde tekrar görüntüleyebilirsiniz.
+- **GeoJSON'u Yükleme:** Önceden dışa aktarılan GeoJSON dosyasını içeri aktararak harita üzerinde tekrar görüntüleyebilirsiniz. Sürükle ve bırak desteklenmektedir.
 
 ### Kullanım
 **1. Harita Görüntüleme:** Sistemi açtığınızda harita otomatik olarak yüklenir.
@@ -47,7 +57,7 @@ Bu projeye katkıda bulunmak isterseniz, lütfen şu adımları izleyin:
 
 **1. Repo'yu forklayın.**
 
-**2. Yeni bir branş oluşturun** (``git checkout -b feature-isim``).
+**2. Yeni bir branch oluşturun** (``git checkout -b feature-isim``).
 
 **3. Yapacağınız değişiklikleri commitleyin** (``git commit -am 'Yeni özellik'``).
 
