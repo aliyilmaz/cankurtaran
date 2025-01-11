@@ -1,0 +1,22 @@
+/* Add this CSS to style the marker and add animation */
+
+.animated-marker .marker {
+    width: 24px;
+    height: 24px;
+    background-color: rgb(22, 149, 55);
+    border-radius: 50%;
+    animation: growShrink 1s ease-in-out infinite;
+}
+
+/* Define the grow and shrink animation */
+@keyframes growShrink {
+    0% {
+        transform: scale(1); /* Initial size */
+    }
+    50% {
+        transform: scale(1.5); /* Grow the marker */
+    }
+    100% {
+        transform: scale(1); /* Shrink back to original size */
+    }
+}

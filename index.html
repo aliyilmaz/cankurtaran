@@ -25,6 +25,7 @@
   <script src="assets/lib/Leaflet.draw-develop/src/Leaflet.Draw.Event.js"></script>
   <link rel="stylesheet" href="assets/lib/Leaflet.draw-develop/src/leaflet.draw.css"/>
   <link rel="stylesheet" href="assets/lib/text-label/text-label.css"/>
+  <link rel="stylesheet" href="assets/lib/leaflet-gps-control/leaflet-gps-control.css">
 
   <script src="assets/lib/Leaflet.draw-develop/src/Toolbar.js"></script>
   <script src="assets/lib/Leaflet.draw-develop/src/Tooltip.js"></script>
@@ -60,6 +61,7 @@
   <script src="assets/lib/Leaflet.draw-develop/src/edit/handler/Edit.Circle.js"></script>
 
   <script src="assets/lib/text-label/text-label.js"></script>
+  <script src="assets/lib/leaflet-gps-control/leaflet-gps-control.js"></script>
   <script src="assets/js/app.js"></script>
 
 <script>
@@ -70,6 +72,8 @@
       attribution: '<a href="https://github.com/aliyilmaz/cankurtaran">Project page</a>'
     }).addTo(map);
 
+    L.control.gpsLocation({ position: 'topleft', title:'Konum Takibi' }).addTo(map);
+    
     const Label = L.control.addText({position: 'topleft', status:true});
     if(Label.layer != undefined) Label.layer.addTo(map);
 
