@@ -30,7 +30,7 @@ The project includes the following mapping and annotation features:
 
 ### Usage
 
-**1. Map Display:** When the system is opened, the map will load automatically.
+**1. Map Display:** When the [system is opened](https://aliyilmaz.github.io/repositories/cankurtaran/), the map will load automatically.
 
 **2. Location Tracking:** Click the GPS icon to track your current location on the map. Continuous tracking of your location will be enabled.
 

@@ -29,7 +29,7 @@ Proje aşağıdaki harita ve işaretleme özelliklerine sahiptir:
 - **GeoJSON'u Yükleme:** Önceden dışa aktarılan GeoJSON dosyasını içeri aktararak harita üzerinde tekrar görüntüleyebilirsiniz. Sürükle ve bırak desteklenmektedir.
 
 ### Kullanım
-**1. Harita Görüntüleme:** Sistemi açtığınızda harita otomatik olarak yüklenir.
+**1. Harita Görüntüleme:** [Sistemi açtığınızda](https://aliyilmaz.github.io/repositories/cankurtaran/) harita otomatik olarak yüklenir.
 
 **2. Konum Takibi:** GPS ikonuna tıklayarak mevcut konumunuzu harita üzerinde takip edebilirsiniz. Konumunuzun sürekli takibi sağlanır.
 
