@@ -1,4 +1,5 @@
-Lifeguard (Nature and Environmental Protection Mapping Project)
+## Lifeguard (Nature and Environmental Protection Mapping Project)
+
 This project is developed to enable nature, urban, and monument protectors to make annotations on digital maps to report environmental issues and promote conservation efforts. Users can mark areas that need protection, report them to the relevant authorities, or try to find solutions themselves.
 
 ### Features
@@ -18,7 +19,9 @@ The project includes the following mapping and annotation features:
 - **Import GeoJSON:** Import a previously exported GeoJSON file to visualize the annotations again on the map.
 
 ### Usage
+
 **1. Map Display:** When the system is opened, the map will load automatically.
+
 **2. Location Tracking:** Click the GPS icon to track your current location on the map. Continuous tracking of your location will be enabled.
 
 **3. Annotations:**
@@ -30,6 +33,7 @@ Polygon, Rectangle, Circle: Select the relevant tool and draw the desired area.
 **4. Export and Import Data:**
 
 **Export:** You can export your annotations as a GeoJSON file.
+
 **Import:** You can import a previously exported GeoJSON file to visualize it again on the map.
 
 ### Technologies
@@ -44,9 +48,13 @@ This project is developed using the following technologies:
 If you'd like to contribute to this project, please follow these steps:
 
 **1. Fork the repository.**
+
 **2. Create a new branch** (``git checkout -b feature-name``).
+
 **3. Commit your changes** (``git commit -am 'Added new feature'``).
+
 **4. Push your changes** (``git push origin feature-name``).
+
 **5. Create a pull request.**
 
 ### License

@@ -46,9 +46,13 @@ Bu proje aşağıdaki teknolojilerle geliştirilmiştir:
 Bu projeye katkıda bulunmak isterseniz, lütfen şu adımları izleyin:
 
 **1. Repo'yu forklayın.**
+
 **2. Yeni bir branş oluşturun** (``git checkout -b feature-isim``).
+
 **3. Yapacağınız değişiklikleri commitleyin** (``git commit -am 'Yeni özellik'``).
+
 **4. Değişikliklerinizi push'layın** (``git push origin feature-isim``).
+
 **5. Bir pull request oluşturun.**
 
 ### Lisans
