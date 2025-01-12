@@ -1,0 +1,14 @@
+#leaflet-lang a{
+    display: block;
+    width: 30px;
+    float: left;
+    font-size: 18px;
+    text-decoration: none;
+    color: #333;
+    background-color: #f6f6f6;
+}
+#selected-lang{
+    background-color: rgb(4, 102, 97) !important;
+    color: #fff !important;
+    float: left;
+}

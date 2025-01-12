@@ -1,11 +1,14 @@
 L.Control.GpsLocation = L.Control.extend({
     options: {
-        position: 'topleft',  // The location of the button on the map
-        title: 'Location tracking', // The title of the button
+        position: 'topleft',
+        title: '',
     },
 
     initialize: function (options) {
         L.Util.setOptions(this, options);
+        if (!this.options.title || this.options.title === undefined || this.options.title === null) {
+            this.options.title = 'Location tracking';
+        }
     },
 
     onAdd: function (map) {
