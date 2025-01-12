@@ -666,13 +666,12 @@
                 } 
         
                 let jsonData = JSON.stringify(drawnItemsJson);      
-                let dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(jsonData);
                 let datenow = new Date();
                 let exportFileDefaultName = 'export_draw_' + datenow.toLocaleDateString('en-GB') + '.geojson';
-                let linkElement = document.createElement('a');
-                linkElement.setAttribute('href', dataUri);
-                linkElement.setAttribute('download', exportFileDefaultName);
-                linkElement.click();
+                let blob = new Blob([jsonData], { type: 'application/json' });
+                saveAs(blob, exportFileDefaultName);
+
+
             } else {
                 console.error("drawnItems is not defined.");
             }
