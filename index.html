@@ -70,12 +70,35 @@
 
 
 <script>
-  
-    
-    var map = L.map('map', {zoomControl: false,worldCopyJump: true}).setView([40.908263,29.056295], 19);    
-    var osm = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    var map = L.map('map', {zoomControl: false,worldCopyJump: true}).setView([40.908263,29.056295], 19);
+
+    // Mevcut uydu katmanı (koruyorum)
+    var esriSat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
       attribution: '<a href="https://github.com/aliyilmaz/cankurtaran">Project page</a>'
     }).addTo(map);
+
+    // Sokak haritası (OpenStreetMap)
+    var street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap contributors'
+    });
+
+    // EMODnet (bathymetry) tiles - gerektiğinde URL'yi güncelleyebilirsiniz
+    var emodnet = L.tileLayer('https://tiles.emodnet-bathymetry.eu/2020/baselayer/web_mercator/{z}/{x}/{y}.png', {
+      maxZoom: 12,
+      attribution: 'EMODnet Bathymetry / GEBCO'
+    });
+
+    // Base map kontrolü
+    var baseMaps = {
+      "Uydu (Esri)": esriSat,
+      "Sokak (OSM)": street,
+      "EMODnet Bathymetry": emodnet
+    };
+    L.control.layers(baseMaps, null, { position: 'bottomright', collapsed: false }).addTo(map);
+
+    // Küçük ölçek göstergesi
+    L.control.scale({ position: 'bottomleft' }).addTo(map);
 
     let title;
     if(lang == 'tr'){
