@@ -70,7 +70,7 @@
 
 
 <script>
-    var map = L.map('map', {zoomControl: false,worldCopyJump: true}).setView([40.908263,29.056295], 19);
+    var map = L.map('map', {zoomControl: false,worldCopyJump: true}).setView([40.908263,29.056295], 5);
 
     // Mevcut uydu katmanı (koruyorum)
     var esriSat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
@@ -89,11 +89,17 @@
       attribution: 'EMODnet Bathymetry / GEBCO'
     });
 
+    var nautical = L.tileLayer('https://tiles.c-map.com/wmts/cmt_int1/webmercator/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: 'Nautical Charts'
+    });
+
     // Base map kontrolü
     var baseMaps = {
       "Uydu (Esri)": esriSat,
       "Sokak (OSM)": street,
-      "EMODnet Bathymetry": emodnet
+      "EMODnet Bathymetry": emodnet,
+      "Nautical Charts": nautical
     };
     L.control.layers(baseMaps, null, { position: 'bottomright', collapsed: false }).addTo(map);
 
