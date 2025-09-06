@@ -649,6 +649,9 @@
                     }
                 }
             });
+
+            // Yeni: import edilen GeoJSON'u haritanın ortasına al
+            this._centerMapToGeoJSON(geojson);
         },        
 
         _geojsonExport: function() {
@@ -675,9 +678,72 @@
             } else {
                 console.error("drawnItems is not defined.");
             }
-        }
-             
-        
+        },
+
+        _extractCoords: function (geometry, out) {
+            if (!geometry) return;
+            var type = geometry.type;
+            var c = geometry.coordinates;
+
+            switch (type) {
+                case 'Point':
+                    out.push([c[0], c[1]]);
+                    break;
+                case 'MultiPoint':
+                case 'LineString':
+                    c.forEach(function (pt) { out.push([pt[0], pt[1]]); });
+                    break;
+                case 'MultiLineString':
+                case 'Polygon':
+                    c.forEach(function (ring) {
+                        ring.forEach(function (pt) { out.push([pt[0], pt[1]]); });
+                    });
+                    break;
+                case 'MultiPolygon':
+                    c.forEach(function (poly) {
+                        poly.forEach(function (ring) {
+                            ring.forEach(function (pt) { out.push([pt[0], pt[1]]); });
+                        });
+                    });
+                    break;
+                case 'GeometryCollection':
+                    geometry.geometries.forEach(function (g) { this._extractCoords(g, out); }.bind(this));
+                    break;
+                default:
+                    break;
+            }
+        },
+
+        _centerMapToGeoJSON: function (geojson) {
+            if (!geojson || !geojson.features || !this._map) return;
+            var coords = [];
+
+            geojson.features.forEach(function (feature) {
+                if (feature.geometry) {
+                    this._extractCoords(feature.geometry, coords);
+                }
+            }.bind(this));
+
+            if (coords.length === 0) return;
+
+            // coords are [lng, lat] — convert to Leaflet LatLng
+            var latlngs = coords.map(function (c) {
+                return L.latLng(c[1], c[0]);
+            });
+
+            var bounds = L.latLngBounds(latlngs);
+
+            // Eğer tek bir noktaysa veya bounds tek noktaysa, mevcut zoom'u koru veya makul bir zoom uygula
+            if (bounds.isValid() && bounds.getNorthEast().equals(bounds.getSouthWest())) {
+                var center = bounds.getCenter();
+                var zoom = Math.max(this._map.getZoom() || 13, 15); // tek nokta için en az 15
+                this._map.setView(center, zoom);
+            } else if (bounds.isValid()) {
+                // Tüm öğelerin görünür olacağı şekilde fitBounds uyguluyoruz
+                this._map.fitBounds(bounds, { padding: [50, 50], animate: true });
+            }
+        },
+
         
 
     });
