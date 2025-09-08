@@ -86,7 +86,7 @@
     // EMODnet (bathymetry) tiles - gerektiğinde URL'yi güncelleyebilirsiniz
     var emodnet = L.tileLayer('https://tiles.emodnet-bathymetry.eu/2020/baselayer/web_mercator/{z}/{x}/{y}.png', {
       maxZoom: 12,
-      attribution: 'EMODnet Bathymetry / GEBCO'
+      attribution: 'EMODnet'
     });
 
     var nautical = L.tileLayer('https://tiles.c-map.com/wmts/cmt_int1/webmercator/{z}/{x}/{y}.png', {
@@ -96,9 +96,9 @@
 
     // Base map kontrolü
     var baseMaps = {
-      "Uydu (Esri)": esriSat,
-      "Sokak (OSM)": street,
-      "EMODnet Bathymetry": emodnet,
+      "Satellite (Esri)": esriSat,
+      "Street (OSM)": street,
+      "EMODnet": emodnet,
       "Nautical Charts": nautical
     };
     L.control.layers(baseMaps, null, { position: 'bottomright', collapsed: false }).addTo(map);
