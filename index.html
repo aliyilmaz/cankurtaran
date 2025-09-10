@@ -15,10 +15,104 @@
   <title>Cankurtaran</title>
   <link rel="stylesheet" href="assets/lib/leaflet/leaflet.css"/>
   <link rel="stylesheet" href="assets/css/app.css">
+
+  <!-- Yeni: arama kutusu stilleri (hafif, sayfaya gömülü) -->
+  <style>
+    #searchContainer{
+      position: absolute;
+      top: 10px;
+      /* sağda konumlandırmadan ortaya alındı */
+      left: 50%;
+      right: auto;
+      transform: translateX(-50%);
+      z-index: 10050; /* leaflet üzeri olacak şekilde yüksek */
+      width: 360px;
+      max-height: 60vh;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      font-family: Arial, Helvetica, sans-serif;
+      pointer-events: auto; /* tıklamaları alması için */
+    }
+    #citySearch{
+      padding:8px 10px;
+      border-radius:4px;
+      border:1px solid rgba(0,0,0,0.2);
+      outline: none;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+      background: white;
+    }
+    #searchResults{
+      margin:0;
+      padding:0;
+      list-style:none;
+      overflow:auto;
+      background: white;
+      border: 1px solid rgba(0,0,0,0.12);
+      border-radius:4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+      pointer-events: auto;
+    }
+    #searchResults li{
+      padding:8px 10px;
+      border-bottom:1px solid rgba(0,0,0,0.05);
+      cursor:pointer;
+    }
+    #searchResults li:hover{
+      background:#f3f7f3;
+    }
+    #searchResults .meta{
+      display:block;
+      font-size:12px;
+      color:#666;
+    }
+    .search-empty{
+      padding:8px 10px;
+      color:#666;
+    }
+
+    /* Mevcut stil tanımlamalarınızın altına ekleyin */
+    .custom-marker-container {
+      position: relative;
+      display: inline-block;
+    }
+    .custom-marker-container img {
+      display: block;
+    }
+    .close-marker {
+      position: absolute;
+      top: -34px;
+      right: -3px;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      text-align: center;
+      line-height: 30px;
+      font-size: 26px;
+      cursor: pointer;
+      z-index: 100;
+      text-decoration: none;
+      color: #cb6363 !important;
+    }
+    .close-marker:hover{
+      background: #f3e6e6;
+      border-color: #999;
+    }
+  </style>
+
 </head>
 <body>
   <div id="container">
     <div id="map"></div>
+
+    <!-- Yeni: arama inputu ve sonuç listesi -->
+    <div id="searchContainer" aria-hidden="false">
+      <input id="citySearch" type="search" placeholder="Şehir veya ilçe ara..." autocomplete="off" />
+      <ul id="searchResults" role="listbox"></ul>
+    </div>
+
   </div>
   <script src="assets/lib/leaflet/leaflet.js"></script>
 
@@ -299,7 +393,208 @@
     }
     
     var drawMapPlugin = L.drawMapPlugin(options);
-    drawMapPlugin.addTo(map);    
+    drawMapPlugin.addTo(map);
+
+    // Yeni: cities.json içinden anlık (live) arama işlevi
+    (function(){
+      const input = document.getElementById('citySearch');
+      const resultsEl = document.getElementById('searchResults');
+      let cities = [];
+      let marker = null;
+      let debounceTimer = null;
+      
+      // Küçük yardımcı: koordinat anahtarlarını tespit et
+      function getCoords(item){
+        const latKeys = ['lat','latitude','y'];
+        const lngKeys = ['lng','lon','longitude','x'];
+        let lat, lng;
+        for(const k of latKeys){
+          if(item[k] !== undefined){ lat = parseFloat(item[k]); break; }
+        }
+        for(const k of lngKeys){
+          if(item[k] !== undefined){ lng = parseFloat(item[k]); break; }
+        }
+        if(Number.isFinite(lat) && Number.isFinite(lng)) return [lat, lng];
+        return null;
+      }
+      
+      // Özel marker icon oluşturma fonksiyonu
+      function createCustomMarkerIcon() {
+        return L.divIcon({
+          className: '', // ekstra stil eklemeye gerek yok
+          html: `<div class="custom-marker-container">
+                   <a class="close-marker" href="#">×</a>
+                   <img src="assets/lib/leaflet/images/marker-icon.png" alt="marker icon"/>
+                 </div>`,
+          iconSize: [25, 41],
+          iconAnchor: [12, 41]
+        });
+      }
+      
+      // Sonuçları göster
+      function renderResults(list){
+        resultsEl.innerHTML = '';
+        if(!list.length){
+          // Sadece input boş değilse uyarı göster
+          if(input.value.trim() !== ""){
+            const li = document.createElement('li');
+            li.className = 'search-empty';
+            li.textContent = 'Sonuç bulunamadı';
+            resultsEl.appendChild(li);
+          }
+          return;
+        }
+        list.slice(0, 20).forEach(item=>{
+          const li = document.createElement('li');
+          const title = item.name || item.city || 'İsimsiz';
+          const state = item.state_name || item.state || '';
+          li.innerHTML = '<strong>'+title+'</strong>' + (state ? (' <span class="meta"> / '+state+'</span>') : '');
+          li.addEventListener('click', ()=>{
+            const coords = getCoords(item);
+            if(coords){
+              // Önceki marker varsa kaldır
+              if(marker){
+                map.removeLayer(marker);
+                marker = null;
+              }
+              // Yeni marker oluştur (özelleştirilmiş icon ile)
+              marker = L.marker(coords, { icon: createCustomMarkerIcon() }).addTo(map);
+              map.setView(coords, 12);
+              
+              // Kısa süre sonra marker element yüklendiğinde, close butonunu etkinleştir
+              setTimeout(()=>{
+                const markerEl = marker.getElement();
+                if(markerEl){
+                  const closeBtn = markerEl.querySelector('.close-marker');
+                  if(closeBtn){
+                    closeBtn.addEventListener('click', function(e){
+                      e.preventDefault();
+                      map.removeLayer(marker);
+                      marker = null;
+                    });
+                  }
+                }
+              }, 50);
+            }
+            // Seçince arama sonuçlarını temizle
+            resultsEl.innerHTML = '';
+            input.value = title + (state ? (' / ' + state) : '');
+          });
+          resultsEl.appendChild(li);
+        });
+      }
+      
+      // Debounce wrapper
+      function onInput(){
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(()=> filterCities(input.value), 220);
+      }
+      
+      // Filtreleme: name veya state_name anahtarlarında ara (case-insensitive)
+      function filterCities(q){
+        if(!q || q.trim().length < 1){
+          renderResults([]);
+          return;
+        }
+        const term = q.trim().toLowerCase();
+    
+        // normalize: diakritik işaretleri kaldır, küçük harfe çevir
+        function normalize(s){
+          try{
+            return String(s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+          }catch(e){
+            return String(s).toLowerCase();
+          }
+        }
+    
+        const termNorm = normalize(term);
+    
+        // Her bir şehir objesindeki tüm string/number alanlarını birleştir ve içinde arama yap
+        const matches = cities.filter(item=>{
+          if(!item) return false;
+          const parts = [];
+          for(const k in item){
+            if(!Object.prototype.hasOwnProperty.call(item, k)) continue;
+            const v = item[k];
+            if(typeof v === 'string' || typeof v === 'number'){
+              parts.push(v);
+            } else if(Array.isArray(v)){
+              parts.push(v.filter(x => typeof x === 'string' || typeof x === 'number').join(' '));
+            }
+          }
+          const haystack = normalize(parts.join(' '));
+          return haystack.indexOf(termNorm) !== -1;
+        });
+    
+        matches.sort((a,b)=>{
+          const aStr = normalize(Object.values(a).filter(v=> typeof v==='string' || typeof v==='number').join(' '));
+          const bStr = normalize(Object.values(b).filter(v=> typeof v==='string' || typeof v==='number').join(' '));
+          const ai = aStr.indexOf(termNorm);
+          const bi = bStr.indexOf(termNorm);
+          return (ai === -1 ? 9999 : ai) - (bi === -1 ? 9999 : bi);
+        });
+    
+        renderResults(matches);
+      }
+      
+      // Fetch cities.json (bir kez)
+      fetch('assets/cities.json').then(r=>{
+        if(!r.ok) throw new Error('cities.json yüklenemedi');
+        return r.json();
+      }).then(data=>{
+        if(Array.isArray(data)) cities = data;
+        else if(data && data.cities && Array.isArray(data.cities)) cities = data.cities;
+        else {
+          try{
+            cities = JSON.parse(JSON.stringify(data));
+            if(!Array.isArray(cities)) cities = [];
+          }catch(e){
+            cities = [];
+          }
+        }
+      }).catch(err=>{
+        console.warn('cities.json yükleme hatası:', err);
+      });
+      
+      input.addEventListener('input', onInput);
+      
+      // Klavye ile gezinme (temel)
+      input.addEventListener('keydown', function(e){
+        const items = Array.from(resultsEl.querySelectorAll('li'));
+        if(!items.length) return;
+        let idx = items.findIndex(it => it.classList.contains('focused'));
+        if(e.key === 'ArrowDown'){
+          e.preventDefault();
+          idx = Math.min(items.length-1, (idx < 0 ? 0 : idx+1));
+          items.forEach(i=>i.classList.remove('focused'));
+          items[idx].classList.add('focused');
+          items[idx].scrollIntoView({block:'nearest'});
+        }
+        if(e.key === 'ArrowUp'){
+          e.preventDefault();
+          idx = Math.max(0, (idx <= 0 ? 0 : idx-1));
+          items.forEach(i=>i.classList.remove('focused'));
+          items[idx].classList.add('focused');
+          items[idx].scrollIntoView({block:'nearest'});
+        }
+        if(e.key === 'Enter'){
+          e.preventDefault();
+          const focused = resultsEl.querySelector('li.focused');
+          if(focused) focused.click();
+        }
+      });
+      
+      // Tıklama dışı kaydırma sorununu önlemek için
+      setTimeout(()=>{
+        input.addEventListener('mousedown', function(e){
+          e.stopPropagation();
+        });
+        input.addEventListener('touchstart', function(e){
+          e.stopPropagation();
+        }, {passive:true});
+      }, 500);
+      
+    })();
 
   </script>
 
