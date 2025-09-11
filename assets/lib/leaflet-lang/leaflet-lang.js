@@ -4,7 +4,7 @@ const para = document.createElement("div");
 para.id = 'leaflet-lang';
 para.innerHTML = '<a href="#tr"' + (lang == 'tr' ? ' id="selected-lang"' : '') + '>tr</a> <a href="#en"' + (lang == 'en' ? ' id="selected-lang"' : '') + '>en</a>';
 
-para.style = `border:2px solid #ddd; border-radius:8px;z-index: 999;position: absolute;bottom: 58px;left: 10px;background-color: rgb(255, 255, 255);height: auto;width: auto;text-align: center;`;
+para.style = `z-index:999;position:absolute; bottom:30px; left:15px; background-color:#fff; height:auto; width:auto; text-align:center;`;
 document.querySelector('#map').appendChild(para);
 
 const Links = document.querySelectorAll('div#leaflet-lang a');

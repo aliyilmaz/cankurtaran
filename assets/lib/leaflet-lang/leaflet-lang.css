@@ -4,13 +4,11 @@
     float: left;
     font-size: 18px;
     text-decoration: none;
-    color: #a8a6a6;
-    background-color: #cccacac7;
-    font-weight: 100;
+    color: #333;
+    background-color: #f6f6f6;
 }
 #selected-lang{
-    background-color: rgb(255, 255, 255) !important;
-    color: #272727 !important;
+    background-color: rgb(4, 102, 97) !important;
+    color: #fff !important;
     float: left;
-    font-weight: bold;
 }
