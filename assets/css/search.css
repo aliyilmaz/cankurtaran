@@ -1,0 +1,84 @@
+/* ...existing code... */
+#search-control {
+  position: absolute;
+  top: 98px;
+  right: 10px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: system-ui, Arial, sans-serif;
+}
+
+#search-control button {
+  background: rgba(255,255,255,0.95);
+  border: 0;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #2b7a2b;
+}
+
+#search-control button:focus { outline: 2px solid #9fe39f; }
+
+#search-box {
+  display: none;
+  min-width: 220px;
+  max-width: 320px;
+  background: rgba(255,255,255,0.98);
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  padding: 6px;
+}
+
+#search-box.visible,
+#search-box.visible * { display: block; }
+
+#search-box.hidden { display: none; }
+
+#search-box input[type="search"] {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+#search-results {
+  list-style: none;
+  margin: 6px 0 0 0;
+  padding: 0;
+  max-height: 240px;
+  overflow: auto;
+}
+
+#search-results li {
+  padding: 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #111;
+}
+
+#search-results li:hover,
+#search-results li:focus {
+  background: #f1f9f1;
+}
+
+#search-results li.no-results {
+  color: #666;
+  cursor: default;
+}
+/* show box when parent has .visible */
+#search-control #search-box.visible { display: block; }
+/* ensure button and box are aligned on narrow screens */
+@media (max-width: 520px) {
+  #search-control { right: 8px; }
+  #search-box { min-width: 160px; max-width: 260px; }
+}
+/* ...existing code... */
