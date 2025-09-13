@@ -25,6 +25,11 @@
 
 #search-control button:focus { outline: 2px solid #9fe39f; }
 
+#search-control button:disabled {
+  opacity: 0.5;   /* buton pasifken sönük */
+  cursor: not-allowed; /* el işareti çıkmasın */
+}
+
 #search-box {
   display: none;
   min-width: 220px;
@@ -74,6 +79,16 @@
   color: #666;
   cursor: default;
 }
+#search-results .searching {
+  text-align: center;
+  cursor: default;
+}
+#search-results .searching img{
+  width: 220px;
+  height: 40px;
+  object-fit: cover;
+}
+
 /* show box when parent has .visible */
 #search-control #search-box.visible { display: block; }
 /* ensure button and box are aligned on narrow screens */
@@ -81,4 +96,70 @@
   #search-control { right: 8px; }
   #search-box { min-width: 160px; max-width: 260px; }
 }
-/* ...existing code... */
+
+#search-debug-panel{
+  position: fixed;
+  bottom: 45px;
+  left: 155px;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.9);
+  color: white;
+  padding: 12px;
+  padding-right: 20px;
+  border-radius: 8px;
+  font-size: 12px;
+  max-width: 90%;
+  width: 250px;
+  max-height: 200px;
+  overflow: auto;
+  z-index: 9999;
+  display: none;
+  border: 1px solid #555;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+/* Webkit tarayıcıları (Chrome, Safari, Edge) için scrollbar stilleri */
+#search-debug-panel::-webkit-scrollbar {
+    width: 8px;
+}
+
+#search-debug-panel::-webkit-scrollbar-track {
+    background: #222;
+    border-radius: 4px;
+}
+
+#search-debug-panel::-webkit-scrollbar-thumb {
+    background-color: #555;
+    border-radius: 4px;
+}
+
+#search-debug-panel::-webkit-scrollbar-thumb:hover {
+    background-color: #777;
+}
+#search-debug-toggle{
+  position: fixed;
+  bottom: 10px;
+  left: 15px;
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  z-index: 10000;
+  cursor: pointer;
+  font-size: 12px;
+}
+#search-debug-clear{
+  position: absolute;
+  bottom: 50px;
+  left: 264px;
+  background: #3d4241b9;
+  color: white !important;
+  border: none;
+  padding-top: 3px;
+  height: 26px;
+  width: 28px;
+  border-radius: 4px;
+  z-index: 10000;
+  cursor: pointer;
+  font-size: 12px;
+}
